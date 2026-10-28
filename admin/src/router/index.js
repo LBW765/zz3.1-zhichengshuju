@@ -4,6 +4,12 @@ const Layout = () => import('@/layout/index.vue')
 
 export const constantRoutes = [
   {
+    path: '/ai-demo/:pathMatch(.*)*',
+    name: 'AiDemoPreview',
+    component: () => import('@/views/ai-demo/index.vue'),
+    meta: { hidden: true }
+  },
+  {
     path: '/login',
     name: 'Login',
     component: () => import('@/views/login/index.vue'),

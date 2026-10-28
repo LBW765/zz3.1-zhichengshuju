@@ -6,7 +6,11 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "dev:mock": "cross-env MOCK_BACKEND=true nodemon index.js"
+    "dev:mock": "cross-env MOCK_BACKEND=true nodemon index.js",
+    "dev:ai": "nodemon aiServer.js",
+    "start:ai": "node aiServer.js",
+    "reset:ai-demo": "node scripts/resetAiDemo.js",
+    "test:ai": "node --test tests/aiMatching.test.js tests/aiApi.test.js"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",

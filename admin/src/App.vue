@@ -6,18 +6,21 @@
 
 <script setup>
 import { onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { useThemeStore } from '@/store/theme'
 import { useAppStore } from '@/store/app'
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
 
 const themeStore = useThemeStore()
 const appStore = useAppStore()
+const router = useRouter()
 
-onMounted(() => {
+onMounted(async () => {
   // 初始化主题
   themeStore.initTheme()
   // 初始化平台配置
-  appStore.fetchPlatformConfig()
+  await router.isReady()
+  if (!router.currentRoute.value.path.startsWith('/ai-demo')) appStore.fetchPlatformConfig()
 })
 </script>
 

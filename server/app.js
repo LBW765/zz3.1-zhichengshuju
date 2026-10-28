@@ -27,8 +27,10 @@ function createApp() {
     registerRoutes(app)
   }
 
-  // ========== 错误处理（可选，后续扩展） ==========
-  // app.use(errorHandler)
+  app.use((error, _req, res, _next) => {
+    console.error('API error:', error)
+    res.json({ code: 500, message: '服务暂不可用，请稍后重试', data: null })
+  })
 
   return app
 }

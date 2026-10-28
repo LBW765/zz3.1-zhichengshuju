@@ -39,6 +39,11 @@ export default defineConfig({
     host: '0.0.0.0',
     open: true,
     proxy: {
+      '/api/ai': {
+        target: `http://127.0.0.1:${process.env.AI_PORT || 3132}`,
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/ai/, '/ai')
+      },
       '/api': {
         target: 'http://127.0.0.1:3131',
         changeOrigin: true,

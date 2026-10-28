@@ -62,7 +62,7 @@ router.get('/accessible', async (req, res) => {
       return result
     }
 
-    const fullMenuIds = addParents(menuIds, allMenus)
+    const fullMenuIds = await addParents(menuIds, allMenus)
     const accessibleMenus = allMenus.filter(m => fullMenuIds.has(m.id))
 
     res.json({ code: 200, message: '获取成功', data: accessibleMenus.map(dbMenuToApiMenu) })
@@ -136,7 +136,7 @@ async function getDescendantIds(menuId) {
   const rows = await db.all('SELECT id, parent_id FROM menus')
   const childrenMap = new Map()
 
-  rows.forEach(async row => {
+  rows.forEach(row => {
     if (!childrenMap.has(row.parent_id)) {
       childrenMap.set(row.parent_id, [])
     }
@@ -144,9 +144,9 @@ async function getDescendantIds(menuId) {
   })
 
   const descendants = new Set()
-  const walk = async (parentId) => {
+  const walk = (parentId) => {
     const children = childrenMap.get(parentId) || []
-    children.forEach(async childId => {
+    children.forEach(childId => {
       if (descendants.has(childId)) return
       descendants.add(childId)
       walk(childId)
@@ -157,13 +157,13 @@ async function getDescendantIds(menuId) {
   return descendants
 }
 
-function ensureParentAllowed(menuId, parentId) {
+async function ensureParentAllowed(menuId, parentId) {
   if (parentId == null) return
   if (menuId === parentId) {
     throw new Error('上级菜单不能选择自己')
   }
 
-  const descendants = getDescendantIds(menuId)
+  const descendants = await getDescendantIds(menuId)
   if (descendants.has(parentId)) {
     throw new Error('上级菜单不能选择当前菜单或其子菜单')
   }
@@ -192,16 +192,12 @@ async function getRoleIdsByKeys(roleKeys) {
   return rows.map(row => row.id)
 }
 
-async function syncRoleMenus(menuId, roleKeys) {
-  await db.run('DELETE FROM role_menus WHERE menu_id = ?', [menuId])
-
-  const roleIds = getRoleIdsByKeys(roleKeys)
-  if (!roleIds.length) return
-
-  
-  roleIds.forEach(async roleId => {
-    await db.run('INSERT INTO role_menus (role_id, menu_id) VALUES (?, ?)', [roleId, menuId])
-  })
+async function syncRoleMenus(conn, menuId, roleKeys) {
+  await conn.run('DELETE FROM role_menus WHERE menu_id = ?', [menuId])
+  if (!roleKeys.length) return
+  const placeholders = roleKeys.map(() => '?').join(',')
+  const roles = await conn.all(`SELECT id FROM roles WHERE role_key IN (${placeholders})`, roleKeys)
+  for (const role of roles) await conn.run('INSERT INTO role_menus (role_id, menu_id) VALUES (?, ?)', [role.id, menuId])
 }
 
 function buildGeneratedMenuName(id) {
@@ -231,7 +227,7 @@ router.post('/', roleMiddleware('administrator', 'admin'), async (req, res) => {
 
   try {
     const normalizedParentId = parentId ? Number(parentId) : null
-    const parent = getParentMenu(normalizedParentId)
+    const parent = await getParentMenu(normalizedParentId)
     const menuName = normalizeText(name)
     const menuPath = normalizeText(rawPath)
     const componentPath = normalizeText(component)
@@ -265,11 +261,11 @@ router.post('/', roleMiddleware('administrator', 'admin'), async (req, res) => {
       ? menuPath.replace(/^\/+/, '')
       : (menuPath.startsWith('/') ? menuPath : `/${menuPath}`)
 
-    ensureMenuNameUnique(menuName)
-    ensureSiblingPathUnique(normalizedParentId, normalizedPath)
+    await ensureMenuNameUnique(menuName)
+    await ensureSiblingPathUnique(normalizedParentId, normalizedPath)
 
-    await db.transaction(async (conn) => {
-      const result = await db.run(
+    const menuId = await db.transaction(async (conn) => {
+      const result = await conn.run(
         'INSERT INTO menus (parent_id, source_menu_id, name, path, component, redirect, title, icon, layout, platform, affix, hidden, sort, roles) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
       , [normalizedParentId,
         null,
@@ -287,11 +283,10 @@ router.post('/', roleMiddleware('administrator', 'admin'), async (req, res) => {
         JSON.stringify(roleKeys)])
 
       const menuId = Number(result.insertId)
-      syncRoleMenus(menuId, roleKeys)
+      await syncRoleMenus(conn, menuId, roleKeys)
       return menuId
     })
 
-    const menuId = createTransaction()
     const newMenu = await db.get('SELECT * FROM menus WHERE id = ?', [menuId])
     res.json({ code: 200, message: '添加成功', data: dbMenuToApiMenu(newMenu) })
   } catch (error) {
@@ -335,14 +330,14 @@ router.put('/:id', roleMiddleware('administrator', 'admin'), async (req, res) =>
       ? (req.body.parentId ? Number(req.body.parentId) : null)
       : existing.parent_id
 
-    ensureParentAllowed(id, nextParentId)
-    const parent = getParentMenu(nextParentId)
+    await ensureParentAllowed(id, nextParentId)
+    const parent = await getParentMenu(nextParentId)
 
     if (parent && parent.platform !== existing.platform) {
       return res.json({ code: 400, message: '已有菜单不允许跨平台移动；如需跨平台复用，请使用发布功能。' })
     }
 
-    ensureSiblingPathUnique(nextParentId, existing.path, id)
+    await ensureSiblingPathUnique(nextParentId, existing.path, id)
 
     await db.run(
       'UPDATE menus SET parent_id=?, title=?, icon=?, affix=?, hidden=?, sort=?, updated_at=NOW() WHERE id=?'
@@ -373,7 +368,7 @@ router.post('/:id/publish', roleMiddleware('administrator', 'admin'), async (req
 
   try {
     const normalizedParentId = parentId ? Number(parentId) : null
-    const parent = getParentMenu(normalizedParentId)
+    const parent = await getParentMenu(normalizedParentId)
     const title = normalizeText(meta?.title)
     const icon = normalizeText(meta?.icon)
     const platform = parent ? parent.platform : normalizeText(meta?.platform)
@@ -390,8 +385,8 @@ router.post('/:id/publish', roleMiddleware('administrator', 'admin'), async (req
       return res.json({ code: 400, message: '顶级发布必须选择布局模式' })
     }
 
-    await db.transaction(async (conn) => {
-      const result = await db.run(
+    const menuId = await db.transaction(async (conn) => {
+      const result = await conn.run(
         'INSERT INTO menus (parent_id, source_menu_id, name, path, component, redirect, title, icon, layout, platform, affix, hidden, sort, roles) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
       , [normalizedParentId,
         source.id,
@@ -409,17 +404,16 @@ router.post('/:id/publish', roleMiddleware('administrator', 'admin'), async (req
         JSON.stringify(roleKeys)])
 
       const menuId = Number(result.insertId)
-      await db.run(
+      await conn.run(
         'UPDATE menus SET name = ?, path = ?, updated_at = NOW() WHERE id = ?'
       , [buildGeneratedMenuName(menuId),
         buildGeneratedMenuPath(normalizedParentId, menuId),
         menuId])
 
-      syncRoleMenus(menuId, roleKeys)
+      await syncRoleMenus(conn, menuId, roleKeys)
       return menuId
     })
 
-    const menuId = publishTransaction()
     const publishedMenu = await db.get('SELECT * FROM menus WHERE id = ?', [menuId])
     res.json({ code: 200, message: '发布成功', data: dbMenuToApiMenu(publishedMenu) })
   } catch (error) {
@@ -439,7 +433,7 @@ router.delete('/:id', roleMiddleware('administrator', 'admin'), async (req, res)
   }
 
   const result = await db.run('DELETE FROM menus WHERE id = ?', [id])
-  if (result.changes === 0) return res.json({ code: 404, message: '菜单不存在' })
+  if (result.affectedRows === 0) return res.json({ code: 404, message: '菜单不存在' })
   res.json({ code: 200, message: '删除成功' })
 })
 

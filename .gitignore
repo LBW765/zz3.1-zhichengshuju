@@ -63,3 +63,6 @@ _references/
 /docs/ppt_汇报_素材/
 /docs/screenshots/
 /docs/outputs/*.pptx
+
+# 本地授权的吉安城市图片，异地环境通过授权渠道单独提供
+/admin/public/ai-demo/jian-city.jpg

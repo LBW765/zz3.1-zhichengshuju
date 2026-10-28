@@ -122,6 +122,8 @@
 
 页面 ID 对应下方详细规格。详情若标注为“抽屉/分栏”，仍需有可直接访问的详情路由，便于刷新和分享；窄屏可改为整页。
 
+当前实现统一挂在 `/ai-demo` 下；企业、运营、政府页面分别使用 `/enterprise/*`、`/operations/*`、`/government/*` 子路径。目录独立详情为 `/ai-demo/detail/:kind/:id`，申请和项目台账可在各自列表路径后追加记录 ID 直达。
+
 | ID | 页面 | 入口与主要区域 | 角色 | 主要动作 |
 | --- | --- | --- | --- | --- |
 | P01 | 公开首页 | `/`：品牌、指标、我要办/查、案例、资讯 | 全部 | 搜索、跳转、登录 |
@@ -211,14 +213,14 @@ flowchart LR
 
 | API 组 | 最小接口 | 作用 |
 | --- | --- | --- |
-| 门户与目录 | `GET /ai/portal`、`GET /ai/catalog?type=...`、`GET /ai/catalog/:id` | 首页、资讯、模型/数据/算力/智能体及生态目录 |
+| 门户与目录 | `GET /ai/portal`、`GET /ai/search`、`GET /ai/catalog?category=...`、`GET /ai/catalog/:id`、`GET /ai/suppliers/:id` | 首页、综合检索、模型/数据/算力/智能体及生态目录 |
 | 需求 | `GET /ai/demands`、`POST /ai/demands`、`GET /ai/demands/:id` | 列表、发布与详情 |
 | 匹配 | `GET /ai/demands/:id/matches` | 返回供给 ID、0-100 分、命中原因和规则版本 |
 | 申请 | `POST /ai/applications`、`GET /ai/applications`、`GET /ai/applications/:id` | 中试与各类服务申请、本人办理查询 |
 | 运营 | `GET /ai/operations/applications`、`PATCH /ai/operations/applications/:id/status` | 受理、退回、进度更新 |
 | 政府 | `GET /ai/government/overview`、`GET /ai/government/projects` | 产业指标与项目台账 |
 
-核心数据至少覆盖 `ai_demands`（需求及私密联系信息）、`ai_supplier_profiles`（供给能力与适配标签）、`ai_catalog_items`（资源与生态目录）、`ai_applications`（通用/中试申请及当前状态）、`ai_application_events`（完整状态历史）、`ai_portal_content`（门户资讯和示意指标）。业务表包含项目规范要求的 `id`、`created_by`、`created_at`、`updated_at`；业务编号用唯一约束。具体建表前须先核对当前编码规则服务是否可在独立演示库正常取号。
+实际数据表为 `ai_demands`（需求及私密联系信息）、`ai_suppliers`（供给能力与适配标签）、`ai_catalog_items`（资源与生态目录）、`ai_applications`（通用/中试申请及当前状态）、`ai_application_events`（完整状态历史）、`ai_metrics`（示意指标）及账号、令牌、附件表。业务表包含项目规范要求的 `id`、`created_by`、`created_at`、`updated_at`；业务编号有唯一约束，并按插入 ID 生成。AI Demo 使用独立服务和独立 `_demo` MySQL 库，不复用系统库的编码规则表。
 
 当前仓库动态菜单创建接口存在未定义函数与异步调用未等待的问题。第二步接入新菜单前应先修复并测试，按角色初始化新菜单与 `role_menus`，避免仅超级管理员能进入页面。现有脚手架中仍有旧工厂业务文件和内存 Mock 实现；它们不作为 AI Demo 数据源，也不出现在演示导航中。
 

@@ -55,6 +55,11 @@ const findTabByPath = (path, topTabs) => {
 router.beforeEach(async (to, from, next) => {
   NProgress.start()
 
+  if (to.path === '/ai-demo' || to.path.startsWith('/ai-demo/')) {
+    next()
+    return
+  }
+
   const hasToken = Cookies.get('Admin-Token')
 
   if (!hasToken) {

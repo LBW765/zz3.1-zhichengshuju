@@ -10,6 +10,7 @@
     "build:app": "npm --prefix ./app run build",
     "preview:app": "npm --prefix ./app run preview",
     "dev:server": "npm --prefix ./server run dev",
+    "dev:ai": "npm --prefix ./server run dev:ai",
     "dev:server:mock": "npm --prefix ./server run dev:mock"
   }
 }
