@@ -1,0 +1,152 @@
+/**
+ * 通用样式类
+ */
+
+// Flex 布局
+.flex {
+  display: flex;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+// 文本省略
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ellipsis-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// 清除浮动
+.clearfix::after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+// 通用间距
+.mt-10 { margin-top: 10px; }
+.mt-20 { margin-top: 20px; }
+.mb-10 { margin-bottom: 10px; }
+.mb-20 { margin-bottom: 20px; }
+.ml-10 { margin-left: 10px; }
+.ml-20 { margin-left: 20px; }
+.mr-10 { margin-right: 10px; }
+.mr-20 { margin-right: 20px; }
+
+.pt-10 { padding-top: 10px; }
+.pt-20 { padding-top: 20px; }
+.pb-10 { padding-bottom: 10px; }
+.pb-20 { padding-bottom: 20px; }
+.pl-10 { padding-left: 10px; }
+.pl-20 { padding-left: 20px; }
+.pr-10 { padding-right: 10px; }
+.pr-20 { padding-right: 20px; }
+
+// 通用卡片样式
+.card {
+  background-color: var(--bg-card);
+  border-radius: 4px;
+  box-shadow: var(--shadow-sm);
+  padding: 20px;
+  transition: background-color var(--transition-duration) var(--transition-function);
+}
+
+// 页面语义容器
+.page-shell {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 100%;
+  gap: var(--page-section-gap);
+  min-width: 0;
+}
+
+.page-shell__section {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.page-grid {
+  width: 100%;
+}
+
+.page-card {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.table-shell {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.table-shell > * {
+  min-width: 100%;
+}
+
+.table-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  justify-content: flex-start;
+  width: 100%;
+
+  .el-button {
+    font-size: 12px;
+    padding: 0;
+    height: auto;
+  }
+}
+
+.table-actions .el-button + .el-button {
+  margin-left: 0;
+}
+
+// 左右分栏布局（基础数据样板页复用）
+.split-panel {
+  display: flex;
+  gap: var(--page-section-gap);
+  min-height: 0;
+  flex: 1;
+
+  &__left {
+    width: 380px;
+    min-width: 380px;
+    flex-shrink: 0;
+  }
+
+  &__right {
+    flex: 1;
+    min-width: 0;
+  }
+}

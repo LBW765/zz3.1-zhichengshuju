@@ -1,0 +1,66 @@
+/* 默认主题变量（亮色）— 定义在 html 上，不在 page 上重复定义，避免覆盖动态注入的值 */
+html {
+  --primary-color: #409eff;
+  --primary-color-rgb: 64, 158, 255;
+  --primary-light: #79bbff;
+  --primary-dark: #337ecc;
+
+  --bg-color: #f5f7fa;
+  --bg-card: #ffffff;
+  --bg-muted: #eef3fb;
+  --text-primary: #303133;
+  --text-regular: #606266;
+  --text-secondary: #909399;
+  --text-light: #c0c4cc;
+  --border-color: #e4e7ed;
+  --border-light: #ebeef5;
+  --shadow-sm: 0 8rpx 24rpx rgba(31, 35, 41, 0.06);
+  --shadow-base: 0 16rpx 48rpx rgba(31, 35, 41, 0.1);
+}
+
+page {
+  min-height: 100%;
+  background: var(--bg-color);
+  color: var(--text-primary);
+  font-size: 28rpx;
+  line-height: 1.5;
+}
+
+/* 深色主题 */
+html.theme-dark {
+  --bg-color: #1a1a2e;
+  --bg-card: #16213e;
+  --bg-muted: #0f3460;
+  --text-primary: #e0e0e0;
+  --text-regular: #b0b0b0;
+  --text-secondary: #808080;
+  --text-light: #505050;
+  --border-color: #2a2a4a;
+  --border-light: #1f1f3a;
+  --shadow-sm: 0 8rpx 24rpx rgba(0, 0, 0, 0.3);
+  --shadow-base: 0 16rpx 48rpx rgba(0, 0, 0, 0.4);
+}
+
+view,
+text,
+button,
+input,
+textarea,
+image,
+scroll-view,
+swiper,
+swiper-item {
+  box-sizing: border-box;
+}
+
+button {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: none;
+  line-height: inherit;
+}
+
+button::after {
+  border: none;
+}

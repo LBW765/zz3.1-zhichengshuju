@@ -1,0 +1,29 @@
+// SCSS 变量供编译时使用（渐变、rgba 等需要 SCSS 计算的场景）
+$primary-color: var(--primary-color);
+$primary-color-rgb: var(--primary-color-rgb);
+$primary-light: var(--primary-light);
+$primary-dark: var(--primary-dark);
+
+$success-color: #67c23a;
+$danger-color: #f56c6c;
+$warning-color: #e6a23c;
+
+$bg-color: var(--bg-color);
+$bg-card: var(--bg-card);
+$bg-muted: var(--bg-muted);
+$text-primary: var(--text-primary);
+$text-regular: var(--text-regular);
+$text-secondary: var(--text-secondary);
+$text-light: var(--text-light);
+$border-color: var(--border-color);
+$border-light: var(--border-light);
+$shadow-sm: var(--shadow-sm);
+$shadow-base: var(--shadow-base);
+$radius-sm: 16rpx;
+$radius-base: 24rpx;
+$radius-lg: 32rpx;
+$space-xs: 12rpx;
+$space-sm: 16rpx;
+$space-md: 24rpx;
+$space-lg: 32rpx;
+$space-xl: 40rpx;

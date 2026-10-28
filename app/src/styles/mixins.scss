@@ -1,0 +1,22 @@
+@use './variables.scss' as *;
+
+@mixin card-shadow {
+  box-shadow: $shadow-base;
+}
+
+@mixin page-padding {
+  padding-left: $space-lg;
+  padding-right: $space-lg;
+}
+
+@mixin text-ellipsis($line: 1) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  @if $line == 1 {
+    white-space: nowrap;
+  } @else {
+    display: -webkit-box;
+    -webkit-line-clamp: $line;
+    -webkit-box-orient: vertical;
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "name": "template-server",
+  "version": "1.0.0",
+  "description": "模板项目配套后端服务",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "dev:mock": "cross-env MOCK_BACKEND=true nodemon index.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.5",
+    "dotenv": "^17.4.2",
+    "express": "^4.18.2",
+    "express-async-errors": "^3.1.1",
+    "multer": "^2.0.2",
+    "mysql2": "^3.22.5",
+    "sharp": "^0.35.1",
+    "cross-env": "^7.0.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}

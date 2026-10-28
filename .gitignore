@@ -1,0 +1,65 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# SQLite 数据库文件
+server/*.db
+server/*.db-wal
+server/*.db-shm
+**/*.db
+**/*.db-wal
+**/*.db-shm
+
+# 环境变量（含敏感密钥，禁止提交）
+server/.env
+.env
+.env.local
+
+# 上传文件
+server/uploads/*
+!server/uploads/.gitkeep
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Claude Code 本地工作目录
+.claude/
+memory/
+
+# 个人参考资料（不进仓库，本地保留）
+参考前端*/
+_references/
+
+# 本地演示构建和临时输出
+/.lark-slides/
+/.tmp/
+/*.db
+/*.err
+/old-deck*.json
+/old-deck*.xml
+/p*-write.json
+/upload*.json
+
+# 客户原始材料与演示输出（仅本地保留）
+/docs/original/
+/docs/ppt_汇报_素材/
+/docs/screenshots/
+/docs/outputs/*.pptx

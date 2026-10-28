@@ -1,0 +1,68 @@
+{
+  "pages": [
+    {
+      "path": "pages/login/index",
+      "style": {
+        "navigationStyle": "custom",
+        "backgroundColor": "#F5F7FA"
+      }
+    },
+    {
+      "path": "pages/home/index",
+      "style": {
+        "navigationStyle": "custom",
+        "backgroundColor": "#F5F7FA"
+      }
+    },
+    {
+      "path": "pages/mine/index",
+      "style": {
+        "navigationStyle": "custom",
+        "backgroundColor": "#F5F7FA"
+      }
+    },
+    {
+      "path": "pages/profile/index",
+      "style": {
+        "navigationStyle": "custom",
+        "backgroundColor": "#F5F7FA"
+      }
+    },
+    {
+      "path": "pages/change-password/index",
+      "style": {
+        "navigationStyle": "custom",
+        "backgroundColor": "#F5F7FA"
+      }
+    },
+    {
+      "path": "pages/theme/index",
+      "style": {
+        "navigationStyle": "custom",
+        "backgroundColor": "#F5F7FA"
+      }
+    }
+  ],
+  "tabBar": {
+    "color": "#909399",
+    "selectedColor": "#409EFF",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/home/index",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/mine/index",
+        "text": "我的"
+      }
+    ]
+  },
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "模板 App",
+    "navigationBarBackgroundColor": "#F7F8FA",
+    "backgroundColor": "#F5F7FA"
+  }
+}
