@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue'
+import { onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useThemeStore } from '@/store/theme'
 import { useAppStore } from '@/store/app'
@@ -14,6 +14,12 @@ import zhCn from 'element-plus/es/locale/lang/zh-cn'
 const themeStore = useThemeStore()
 const appStore = useAppStore()
 const router = useRouter()
+
+const syncPageScroll = (path) => {
+  document.body.classList.toggle('ai-demo-mode', path.startsWith('/ai-demo'))
+}
+
+watch(() => router.currentRoute.value.path, syncPageScroll, { immediate: true })
 
 onMounted(async () => {
   // 初始化主题
@@ -27,5 +33,9 @@ onMounted(async () => {
 <style>
 #app {
   height: 100%;
+}
+
+body.ai-demo-mode {
+  overflow: auto;
 }
 </style>
