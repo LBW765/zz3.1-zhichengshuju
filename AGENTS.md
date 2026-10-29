@@ -31,6 +31,7 @@
 - 移动端：`npm run dev:app`
 - 后端：`npm run dev:server`，端口 `3131`
 - admin 通过 Vite proxy 将 `/api` 转发到后端，并剥离 `/api` 前缀
+- 访问 `http://127.0.0.1:8131/` 登录后默认进入 AI Demo 入口 `/ai-demo`
 - 依赖安装：分别在 `admin/`、`app/`、`server/` 执行 `npm install`
 
 ## 数据库

@@ -7,20 +7,12 @@ import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import Cookies from 'js-cookie'
 import { PLATFORMS } from '@/constants/auth'
-import { getTabHome } from '@/utils/navigation'
 
 NProgress.configure({ showSpinner: false })
 
 const whiteList = ['/login', '/404', '/401']
 
-const getDefaultHome = (platform, permissionStore) => {
-  const tabs = permissionStore.topTabs
-  if (!tabs.length) {
-    // 如果没有可访问的菜单，重定向到个人中心（静态路由，始终存在）
-    return '/profile'
-  }
-  return getTabHome(tabs[0])
-}
+const getDefaultHome = () => '/ai-demo'
 
 const ensureRoutes = async (userStore, permissionStore, appStore) => {
   if (permissionStore.routesLoaded) return false

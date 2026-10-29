@@ -114,7 +114,7 @@ const loginRules = {
 const isInternalPath = (path) => typeof path === 'string' && path.startsWith('/') && !path.startsWith('//')
 
 const getDefaultHomePath = () => {
-  return '/'
+  return '/ai-demo'
 }
 
 const handleLogin = () => {
