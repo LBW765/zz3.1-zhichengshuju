@@ -3,7 +3,7 @@
 ## 本地启动
 
 1. 安装 `admin/` 和 `server/` 的 npm 依赖。
-2. 准备本机 MySQL 或 MariaDB。AI Demo 默认连接 `127.0.0.1:3306`，库名 `jian_ai_demo`；可通过 `AI_DB_HOST`、`AI_DB_PORT`、`AI_DB_USER`、`AI_DB_PASSWORD`、`AI_DB_NAME` 覆盖。库名必须以 `_demo` 结尾。服务首次启动会创建库、表和演示数据，不读取原系统的 `DB_*` 配置。
+2. AI Demo 默认使用内存 Mock 数据，不需要 MySQL 或 MariaDB。服务启动时自动加载种子数据，重启服务会恢复初始演示状态。只有明确设置 `AI_MOCK=false` 时才启用独立 `_demo` MySQL 库，并读取 `AI_DB_HOST`、`AI_DB_PORT`、`AI_DB_USER`、`AI_DB_PASSWORD`、`AI_DB_NAME`。
 3. 运行 `npm run dev:ai`，AI Demo API 默认监听 `127.0.0.1:3132`。
 4. 运行 `npm run dev:admin`，打开 `http://127.0.0.1:8131/ai-demo`。管理端的 `/api/ai` 自动代理到 AI Demo 服务。
 
@@ -22,6 +22,6 @@
 
 ## 验证与重置
 
-`npm --prefix server run test:ai` 包含规则测试和跨角色接口测试。接口测试要求 AI Demo 服务已启动，且连接的库名以 `_demo` 结尾；它会清理自己创建的记录。
+`npm --prefix server run test:ai` 包含规则测试和跨角色接口测试。接口测试要求 AI Demo 服务已启动；默认 Mock 模式下测试数据在服务进程内完成，不需要数据库。测试进程无法直接清理另一个服务进程的内存记录，验收后重启 AI Demo 服务即可恢复标准种子数据。
 
-重置只作用于独立演示库：先停止 AI Demo 服务，再设置 `AI_DEMO_RESET=1`，运行 `npm --prefix server run reset:ai-demo`，最后重新启动服务。重置会删除该库所有 AI Demo 业务记录与上传附件的数据库记录；上传文件需在本机演示环境中另行清理。不要对有现场记录需要保留的演示库执行重置。
+Mock 模式的重置方式是停止并重新启动 AI Demo 服务，内存数据会重新加载种子记录。若明确使用 `AI_MOCK=false`，再按原流程先停止服务、设置 `AI_DEMO_RESET=1`、运行 `npm --prefix server run reset:ai-demo`，最后重新启动服务；该命令只允许作用于名称以 `_demo` 结尾的独立演示库。

@@ -13,7 +13,7 @@ async function reset() {
     }
   })
   await seedAi()
-  console.log(`已重置演示数据库 ${aiDb.database}`)
+  console.log(`已重置 AI Demo ${aiDb.database}`)
 }
 
 reset().catch(error => { console.error(error.message); process.exitCode = 1 }).finally(() => aiDb.pool.end())

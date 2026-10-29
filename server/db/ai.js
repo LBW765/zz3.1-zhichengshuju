@@ -1,5 +1,15 @@
 const fs = require('fs')
 const path = require('path')
+
+// AI Demo defaults to in-memory data so the demo can run without MySQL.
+const useMock = String(process.env.AI_MOCK ?? 'true').toLowerCase() !== 'false'
+
+if (useMock) {
+  const { aiMockDb } = require('./aiMock')
+  module.exports = { aiDb: aiMockDb, initAiSchema: async () => {}, useMock }
+  return
+}
+
 const mysql = require('mysql2/promise')
 
 const database = process.env.AI_DB_NAME || 'jian_ai_demo'
@@ -55,4 +65,4 @@ async function initAiSchema() {
   }
 }
 
-module.exports = { aiDb, initAiSchema }
+module.exports = { aiDb, initAiSchema, useMock }

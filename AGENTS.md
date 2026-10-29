@@ -35,10 +35,10 @@
 
 ## 数据库
 
-- 使用 MySQL，连接配置来自 `server/.env`
+- 原系统使用 MySQL，连接配置来自 `server/.env`；AI Demo 默认使用内存 Mock 数据，不要求本机安装数据库
 - `server/.env` 不提交
 - 首次连接空库时，后端会执行 `server/db/schema.sql` 创建基础表，并执行 `server/db/seed.js` 初始化账号和基础菜单
-- 原系统 schema 包含系统基础表和编码规则表；AI Demo schema 位于 `server/db/aiSchema.sql`，只在独立服务启动时初始化
+- 原系统 schema 包含系统基础表和编码规则表；AI Demo 默认由 `server/db/aiMock.js` 提供内存数据，设置 `AI_MOCK=false` 后才使用 `server/db/aiSchema.sql` 和独立 `_demo` MySQL 库
 
 ## 预设账号
 
@@ -79,7 +79,7 @@
 | 编码规则 | `/code-rule`、`/code-rule/preview`、`/code-rule/next-code` | `admin/src/api/codeRule.js` |
 | AI Demo | `/ai/*`，独立服务端口 `3132` | `admin/src/api/aiDemo.js` |
 
-AI Demo 服务使用 `npm run dev:ai` 启动，只读取 `AI_DB_*` 数据库连接配置，库名必须以 `_demo` 结尾。管理端 `/api/ai` 代理到该服务，业务页面位于 `admin/src/views/ai-demo/`。详细功能和验收见 `docs/outputs/吉安市人工智能创新应用综合服务平台Demo开发文档.md`。
+AI Demo 服务使用 `npm run dev:ai` 启动，默认运行内存 Mock 模式并在重启时恢复种子数据；设置 `AI_MOCK=false` 后才读取 `AI_DB_*` 数据库连接配置，库名必须以 `_demo` 结尾。管理端 `/api/ai` 代理到该服务，业务页面位于 `admin/src/views/ai-demo/`。详细功能和验收见 `docs/outputs/吉安市人工智能创新应用综合服务平台Demo开发文档.md`。
 
 ### app 页面
 
@@ -92,7 +92,7 @@ AI Demo 服务使用 `npm run dev:ai` 启动，只读取 `AI_DB_*` 数据库连�
 
 ## 接口规范
 
-- 所有接口走真实后端，不写 mock 数据
+- AI Demo 页面走独立 Express 后端；其默认数据源是服务内存 Mock，业务页面不在前端写静态 Mock API
 - 前端 API URL 不带 `/api` 前缀
 - 后端路由路径不带 `/api` 前缀
 - 响应格式：`{ code: 200, message: '', data: {} }`
