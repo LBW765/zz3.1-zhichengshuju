@@ -50,8 +50,10 @@
           <div class="sidebar-footer"><span class="online-dot"></span>吉安市人工智能创新应用综合服务平台</div>
         </aside>
         <main class="workspace-main">
-          <WorkspacePage v-if="store.ready" :page="pageKey" :role="store.user?.role || 'public'" @navigate="go" />
-          <div v-else class="work-page"><el-skeleton :rows="8" animated /></div>
+          <Transition name="ai-content-page" mode="out-in">
+            <WorkspacePage v-if="store.ready" :key="route.fullPath" :page="pageKey" :role="store.user?.role || 'public'" @navigate="go" />
+            <div v-else key="workspace-loading" class="work-page"><el-skeleton :rows="8" animated /></div>
+          </Transition>
         </main>
       </div>
       <el-drawer v-model="drawerOpen" title="平台导航" direction="ltr" size="300px" class="mobile-nav-drawer"><div v-for="group in navigation" :key="group.key" class="drawer-group"><strong>{{ group.label }}</strong><button v-for="item in drawerItems(group)" :key="item.path" @click="goAbsolute(item.path); drawerOpen = false">{{ item.label }}</button></div></el-drawer>

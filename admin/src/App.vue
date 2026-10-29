@@ -1,10 +1,6 @@
 <template>
   <el-config-provider :locale="zhCn">
-    <router-view v-slot="{ Component, route }">
-      <Transition :name="route.path.startsWith('/ai-demo') ? 'ai-page' : undefined" mode="out-in">
-        <component :is="Component" :key="route.path.startsWith('/ai-demo') ? route.fullPath : route.name" />
-      </Transition>
-    </router-view>
+    <router-view />
   </el-config-provider>
 </template>
 
@@ -43,18 +39,4 @@ body.ai-demo-mode {
   overflow: auto;
 }
 
-.ai-page-enter-active,
-.ai-page-leave-active {
-  transition: opacity 220ms ease, transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.ai-page-enter-from {
-  opacity: 0;
-  transform: translateY(8px);
-}
-
-.ai-page-leave-to {
-  opacity: 0;
-  transform: translateY(-4px);
-}
 </style>

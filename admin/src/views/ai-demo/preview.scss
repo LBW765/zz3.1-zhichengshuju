@@ -33,9 +33,12 @@
 @keyframes ai-content-in { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 .ai-demo .demand-list, .ai-demo .resource-list, .ai-demo .catalog-grid, .ai-demo .ecosystem-list, .ai-demo .split-work { animation: ai-content-in 180ms ease both; }
 @media (prefers-reduced-motion: reduce) {
-  .ai-page-enter-active, .ai-page-leave-active { transition: none; }
+  .ai-content-page-enter-active, .ai-content-page-leave-active { transition: none; }
   .ai-demo .demand-list, .ai-demo .resource-list, .ai-demo .catalog-grid, .ai-demo .ecosystem-list, .ai-demo .split-work { animation: none; }
 }
+.ai-content-page-enter-active, .ai-content-page-leave-active { transition: opacity 180ms ease, transform 220ms cubic-bezier(0.22, 1, 0.36, 1); }
+.ai-content-page-enter-from { opacity: 0; transform: translateY(6px); }
+.ai-content-page-leave-to { opacity: 0; transform: translateY(-3px); }
 .eyebrow { display: block; margin-bottom: 7px; color: var(--demo-green); font-size: 10px; font-weight: 700; line-height: 1.4; }
 .text-link { display: inline-flex; align-items: center; gap: 6px; border: 0; padding: 0; background: none; color: var(--demo-orange); font-weight: 600; white-space: nowrap; }
 .text-link:hover { color: #ad5e1b; }
