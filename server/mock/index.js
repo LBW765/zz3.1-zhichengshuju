@@ -37,9 +37,9 @@ const menus = [
 ]
 
 const users = [
-  { id: 1, username: 'administrator', password: 'admin123', nickName: '超级管理员', email: 'administrator@system.com', phone: '13800000000', deptName: '系统', roleName: '超级管理员', roles: ['administrator'], permissions: ['*:*:*'], status: 1 },
-  { id: 2, username: 'admin', password: 'admin123', nickName: '管理员', email: 'admin@example.com', phone: '13888888888', deptName: '技术部', roleName: '管理员', roles: ['admin'], permissions: ['*:*:*'], status: 1 },
-  { id: 3, username: 'user', password: 'admin123', nickName: '普通用户', email: 'user@example.com', phone: '13666666666', deptName: '业务部', roleName: '普通用户', roles: ['user'], permissions: ['dashboard:view'], status: 1 }
+  { id: 1, username: 'administrator', password: '123456', nickName: '超级管理员', email: 'administrator@system.com', phone: '13800000000', deptName: '系统', roleName: '超级管理员', roles: ['administrator'], permissions: ['*:*:*'], status: 1 },
+  { id: 2, username: 'admin', password: '123456', nickName: '管理员', email: 'admin@example.com', phone: '13888888888', deptName: '技术部', roleName: '管理员', roles: ['admin'], permissions: ['*:*:*'], status: 1 },
+  { id: 3, username: 'user', password: '123456', nickName: '普通用户', email: 'user@example.com', phone: '13666666666', deptName: '业务部', roleName: '普通用户', roles: ['user'], permissions: ['dashboard:view'], status: 1 }
 ]
 
 const departments = [
@@ -291,7 +291,7 @@ function createMockRouter() {
     const username = String(req.body.username || '').trim()
     if (!username || store.users.some(item => item.username === username)) return error(res, 400, '用户名不能为空或已存在')
     const roleKeys = Array.isArray(req.body.roles) && req.body.roles.length ? req.body.roles : ['user']
-    const row = { id: store.nextId++, username, password: req.body.password || 'admin123', nickName: req.body.nickName || username, email: req.body.email || '', phone: req.body.phone || '', deptName: req.body.deptName || '', roleName: roleKeys.join('、'), roles: roleKeys, permissions: roleKeys.includes('user') ? ['dashboard:view'] : ['*:*:*'], status: req.body.status === undefined ? 1 : req.body.status }
+    const row = { id: store.nextId++, username, password: req.body.password || '123456', nickName: req.body.nickName || username, email: req.body.email || '', phone: req.body.phone || '', deptName: req.body.deptName || '', roleName: roleKeys.join('、'), roles: roleKeys, permissions: roleKeys.includes('user') ? ['dashboard:view'] : ['*:*:*'], status: req.body.status === undefined ? 1 : req.body.status }
     store.users.push(row)
     return ok(res, { id: row.id }, '添加成功')
   })
@@ -300,7 +300,7 @@ function createMockRouter() {
   router.put('/system/users/:id/reset-password', (req, res) => {
     const user = store.users.find(item => item.id === Number(req.params.id))
     if (!user) return error(res, 404, '用户不存在')
-    user.password = req.body.password || 'admin123'
+    user.password = req.body.password || '123456'
     return ok(res, null, '密码重置成功')
   })
   router.delete('/system/users/:id', (req, res) => deleteFrom(store.users, req, res, '用户不存在'))

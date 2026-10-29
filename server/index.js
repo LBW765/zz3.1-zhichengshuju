@@ -28,9 +28,9 @@ async function start() {
       console.log(`  Users: ${userRow.count}, menus: ${menuRow.count}`)
     }
     console.log('  Preset accounts:')
-    console.log('    administrator / admin123')
-    console.log('    admin / admin123')
-    console.log('    user / admin123\n')
+    console.log('    administrator / 123456')
+    console.log('    admin / 123456')
+    console.log('    user / 123456\n')
   })
 
   function shutdown() {

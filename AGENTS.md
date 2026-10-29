@@ -42,9 +42,9 @@
 
 ## 预设账号
 
-- `administrator / admin123`
-- `admin / admin123`
-- `user / admin123`
+- `administrator / 123456`
+- `admin / 123456`
+- `user / 123456`
 
 ## 当前保留模块
 

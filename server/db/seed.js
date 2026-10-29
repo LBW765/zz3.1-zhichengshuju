@@ -27,7 +27,7 @@ const roles = [
 const users = [
   {
     username: 'administrator',
-    password: 'admin123',
+    password: '123456',
     nickName: '超级管理员',
     email: 'administrator@system.com',
     phone: '13800000000',
@@ -38,7 +38,7 @@ const users = [
   },
   {
     username: 'admin',
-    password: 'admin123',
+    password: '123456',
     nickName: '管理员',
     email: 'admin@example.com',
     phone: '13888888888',
@@ -49,7 +49,7 @@ const users = [
   },
   {
     username: 'user',
-    password: 'admin123',
+    password: '123456',
     nickName: '普通用户',
     email: 'user@example.com',
     phone: '13666666666',

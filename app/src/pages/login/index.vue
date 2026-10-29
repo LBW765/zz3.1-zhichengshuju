@@ -53,7 +53,7 @@ const loading = ref(false)
 
 const form = reactive({
   username: 'admin',
-  password: 'admin123'
+  password: '123456'
 })
 
 const handleLogin = async () => {

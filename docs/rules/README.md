@@ -45,7 +45,7 @@ npm run dev:admin
 
 访问 http://localhost:8131，使用预设账号登录：
 - 账号：`administrator`
-- 密码：`admin123`
+- 密码：`123456`
 
 ## 第四步：配置业务菜单
 

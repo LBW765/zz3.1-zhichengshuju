@@ -96,8 +96,8 @@ const footerText = computed(() => {
 const rememberedUsername = localStorage.getItem('remembered-username') || ''
 
 const loginForm = reactive({
-  username: rememberedUsername,
-  password: '',
+  username: rememberedUsername || 'admin',
+  password: '123456',
   rememberMe: !!rememberedUsername
 })
 
