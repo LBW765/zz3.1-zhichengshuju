@@ -11,6 +11,16 @@ async function start() {
   const app = express()
   app.use(cors())
   app.use(express.json({ limit: '2mb' }))
+  app.get('/', (_req, res) => res.json({
+    code: 200,
+    message: 'AI Demo API running',
+    data: {
+      mode: useMock ? 'in-memory mock' : 'mysql',
+      api: '/ai',
+      portal: '/ai/portal',
+      admin: 'http://127.0.0.1:8131/ai-demo'
+    }
+  }))
   app.use('/ai', require('./routes/ai'))
   app.use((error, _req, res, _next) => {
     console.error('AI Demo API error:', error)
